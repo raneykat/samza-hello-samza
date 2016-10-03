@@ -20,8 +20,9 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASE_DIR=$(dirname $DIR)
+KAFKA_DIR=/usr/hdp/2.4.0.0-169
 ZOOKEEPER=localhost:2181
-KAFKA_BROKER=localhost:9092
+KAFKA_BROKER=sandbox.hortonworks.com:6667
 
 # overwritten options
 while getopts "z:b:" option
@@ -35,15 +36,15 @@ echo "Using ${ZOOKEEPER} as the zookeeper. You can overwrite it with '-z yourloc
 echo "Using ${KAFKA_BROKER} as the kafka broker. You can overwrite it with '-b yourlocation'"
 
 # check if the topic exists. if not, create the topic
-EXIST=$($BASE_DIR/deploy/kafka/bin/kafka-topics.sh --describe --topic wikipedia-raw --zookeeper $ZOOKEEPER)
+EXIST=$($KAFKA_DIR/kafka/bin/kafka-topics.sh --describe --topic wikipedia-raw --zookeeper $ZOOKEEPER)
 if [ -z "$EXIST" ]
   then
-    $BASE_DIR/deploy/kafka/bin/kafka-topics.sh --create --zookeeper $ZOOKEEPER --topic wikipedia-raw --partition 1 --replication-factor 1
+    $KAFKA_DIR/kafka/bin/kafka-topics.sh --create --zookeeper $ZOOKEEPER --topic wikipedia-raw --partition 1 --replication-factor 1
 fi
 
 # produce raw data
 while sleep 1
 do 
-  $BASE_DIR/deploy/kafka/bin/kafka-console-producer.sh < $BASE_DIR/wikipedia-raw.json --topic wikipedia-raw --broker $KAFKA_BROKER
+  $KAFKA_DIR/kafka/bin/kafka-console-producer.sh < $BASE_DIR/wikipedia-raw.json --topic wikipedia-raw --broker $KAFKA_BROKER
 done
 

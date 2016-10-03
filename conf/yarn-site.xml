@@ -28,10 +28,10 @@ under the License.
   </property>
   <property>
     <name>yarn.resourcemanager.hostname</name>
-    <value>127.0.0.1</value>
+    <value>sandbox.hortonworks.com</value>
   </property>
   <property>
-    <name>yarn.nodemanager.delete.debug-delay.sec</name>
-    <value>86400</value>
+    <name>yarn.resourcemanager.address</name>
+    <value>sandbox.hortonworks.com:8050</value>
   </property>
 </configuration>
